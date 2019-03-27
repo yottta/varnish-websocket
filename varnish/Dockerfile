@@ -12,6 +12,7 @@ RUN \
     build-essential \
     ca-certificates \
     wget \
+    curl \
     python3-sphinx \
     libedit-dev \
     libjemalloc-dev \

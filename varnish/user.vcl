@@ -9,7 +9,10 @@ backend productService {
     .host = "product-service";
     .port = "8080";
 }
-
+acl purge {
+    "localhost";
+    "127.0.0.1";
+}
 sub vcl_recv {
     if (req.url == "/product" || req.url == "/ws") {
         set req.backend_hint = productService;
@@ -18,6 +21,9 @@ sub vcl_recv {
         return (pipe);
     }
     if (req.method == "PURGE") {
+        if (!client.ip ~ purge) {
+            return(synth(405,"Not allowed."));
+        }
         return (purge);
     }
 }
