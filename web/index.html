@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+</head>
+<body>
+    <p>Product List:</p>
+    <ul id="products">
+    </ul>
+    <script>
+        const httpGET = new XMLHttpRequest();
+        httpGET.open("GET", "http://127.0.0.1/product");
+        httpGET.send();
+        httpGET.onloadend = (e) => {
+            var products = JSON.parse(httpGET.responseText);
+            products['products'].forEach(function(el) {
+                existingContent = document.getElementById("products").innerHTML
+                document.getElementById("products").innerHTML = existingContent + ("<li>" + el + "</li>");
+            });
+        }
+        
+        let socket = new WebSocket("ws://127.0.0.1/ws")
+        socket.onopen = () => {
+            console.log("Successfully websocket connected")
+        }
+        socket.onclose = (event) => {
+            console.log("Socket closed connection", event)
+        }
+        socket.onerror = (error) => {
+            console.log("Socket error: ", error)
+        }
+        socket.onmessage = (msgEvent) => {
+            console.log("Message received", msgEvent.data)
+            existingContent = document.getElementById("products").innerHTML
+            document.getElementById("products").innerHTML = existingContent + ("<li>" + msgEvent.data + "</li>");
+        }
+    </script>
+</body>
+</html>

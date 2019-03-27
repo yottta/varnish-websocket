@@ -1,0 +1,25 @@
+version: "3"
+services:
+  web:
+    build: ./web
+    container_name: web-client
+    networks:
+      - internal-network
+  server:
+    build: ./server
+    container_name: product-service
+    networks:
+      - internal-network
+  varnish:
+    build: ./varnish
+    container_name: varnish-server
+    depends_on:
+      - server
+      - web
+    ports:
+      - "80:6081"
+    networks:
+      - internal-network
+networks:
+  internal-network:
+
