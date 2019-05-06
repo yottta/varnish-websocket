@@ -1,4 +1,4 @@
-module github.com/andreic92/product-service
+module github.com/yottta/product-service
 
 go 1.12
 
